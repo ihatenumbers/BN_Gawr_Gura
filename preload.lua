@@ -117,7 +117,7 @@ mod.electroreception_seen = {}
 gapi.add_on_every_x_hook(TimeDuration.from_seconds(3), function()
     local avatar = gapi.get_avatar()
     if not avatar then return end
-    if not avatar:has_trait(MutationBranchId.new("ELECTRORECEPTION")) then return end
+    if not avatar:has_trait(MutationBranchId.new("ELECTRORECEPTION_SAME")) then return end
 
     local avatar_pos = avatar:get_pos_ms()
 
