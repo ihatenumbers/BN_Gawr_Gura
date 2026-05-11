@@ -100,9 +100,7 @@
     "purifiable": false,
     "threshreq": [ "THRESH_SAME" ],
     "category": [ "SAME" ],
-    "active": true,
-    "cost": 50,
-    "stamina": true
+    "active": true
   },
   {
     "type": "mutation",
