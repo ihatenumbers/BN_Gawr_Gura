@@ -31,7 +31,7 @@
     "type": "ARMOR",
     "copy-from": "hoodie",
     "name": { "str": "shark hoodie" },
-    "description": "A cozy shark hoodie with a shark mouth on the hood and a small dorsal fin on the back.  Two pockets on the front are perfect for storing sweets.",
+    "description": "A cozy shark hoodie with a shark mouth on the front and a small dorsal fin on the back.  Two pockets on the front are perfect for storing sweets.",
     "color": "blue",
     "extend": { "flags": [ "TRADER_AVOID" ] }
   }
