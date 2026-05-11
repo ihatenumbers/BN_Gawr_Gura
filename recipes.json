@@ -10,5 +10,14 @@
     "result": "mutagen_same",
     "copy-from": "mutagen_fish",
     "//": "Uses mutagen_fish components: fish, canned fish, ammonia/lye"
+  },
+  {
+    "type": "recipe",
+    "result": "shark_hoodie",
+    "copy-from": "hoodie",
+    "difficulty": 2,
+    "time": "20 m",
+    "using": [ [ "sewing_standard", 6 ] ],
+    "components": [ [ [ "hoodie", 1 ] ], [ [ "rag", 4 ] ] ]
   }
 ]

@@ -2,6 +2,12 @@
 
 Adds a shark-girl mutation category inspired by Gawr Gura.
 
+To make it more accurate on appearance, make sure to add:
+- Eye color: blue
+- Hair color: white
+- Hair style: long
+- Pale Skin
+
 ## New Content
 
 | File | Count | What |
@@ -13,7 +19,7 @@ Adds a shark-girl mutation category inspired by Gawr Gura.
 | `effects.json` | 1 | Shark Call buff effect (strength + speed scaling) |
 | `dreams.json` | 4 | SAME category dreams (4 intensity tiers) |
 | `mutagens.json` | 2 | SAME mutagen and SAME serum |
-| `recipes.json` | 2 | Mutagen and serum crafting recipes |
+| `recipes.json` | 3 | Mutagen, serum, and shark hoodie crafting recipes |
 | `categories.json` | 1 | SAME mutation category |
 | `thresh_mutation.json` | 1 | Atlantean threshold mutation (THRESH_SAME) |
 | `nested.json` | 1 | Nested mutation category config |
