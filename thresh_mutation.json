@@ -1,0 +1,13 @@
+[
+  {
+    "type": "mutation",
+    "id": "THRESH_SAME",
+    "name": { "str": "Atlantean" },
+    "points": 1,
+    "description": "The lost city of Atlantis rises again through you.  Your shark-like instincts are razor sharp, the ocean welcomes you as its own, and your teeth could bite through steel.  Not bad for someone who just wanted to be a cute shark girl!",
+    "valid": false,
+    "purifiable": false,
+    "threshold": true,
+    "mutagen_target_modifier": 10
+  }
+]

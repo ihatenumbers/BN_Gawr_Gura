@@ -1,0 +1,9 @@
+[
+  {
+    "type": "nested_category",
+    "id": "nested_mutagens_strains",
+    "//": "Extends the vanilla nested mutagen strains category to include Same mutagens.",
+    "copy-from": "nested_mutagens_strains",
+    "extend": { "nested_category_data": [ "mutagen_same", "iv_mutagen_same" ] }
+  }
+]

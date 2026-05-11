@@ -1,0 +1,36 @@
+[
+  {
+    "type": "dream",
+    "messages": [ "You have a strange dream about sharks.", "Your dreams give you a strange damp, finned feeling." ],
+    "category": "SAME",
+    "strength": 1
+  },
+  {
+    "type": "dream",
+    "messages": [
+      "You dream of swimming through vast undersea canyons.",
+      "In your dream you catch a glimpse of a shark tail while swimming."
+    ],
+    "category": "SAME",
+    "strength": 2
+  },
+  {
+    "type": "dream",
+    "messages": [
+      "You have a vivid dream of hunting in the deep ocean, sensing every ripple and vibration.",
+      "The ruins of an ancient underwater city shimmer in your dream, and it feels like home."
+    ],
+    "category": "SAME",
+    "strength": 3
+  },
+  {
+    "type": "dream",
+    "messages": [
+      "You glide through the water with effortless grace, the apex predator of this drowned world. The surface seems so far away now.",
+      "Atlantis beckons you home.  Its marble spires and coral gardens feel more real than the waking world.",
+      "You dream of leading a school of sharks through the flooded ruins of New England.  'a', you say to them, and they understand."
+    ],
+    "category": "SAME",
+    "strength": 4
+  }
+]

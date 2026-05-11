@@ -1,0 +1,160 @@
+[
+  {
+    "type": "mutation",
+    "id": "FAST_REFLEXES_SAME",
+    "name": { "str": "Fast Reflexes" },
+    "points": 2,
+    "description": "Your shark instincts give you lightning-fast reaction times.  You react to danger before you even consciously register it.",
+    "prereqs": [ "SHORT_SAME" ],
+    "starting_trait": true,
+    "category": [ "SAME" ],
+    "attackcost_modifier": 0.9,
+    "dodge_modifier": 1
+  },
+  {
+    "type": "mutation",
+    "id": "SHORT_SAME",
+    "name": { "str": "Short" },
+    "points": 1,
+    "description": "You're a bit on the short side, making you harder to hit.  Not that it bothers you; you can still reach the top shelf with your shark tail.",
+    "starting_trait": true,
+    "category": [ "SAME" ],
+    "dodge_modifier": 2,
+    "cancels": [ "LARGE", "LARGE_OK", "HUGE", "HUGE_OK" ]
+  },
+  {
+    "type": "mutation",
+    "id": "TAIL_SHARK",
+    "name": { "str": "Shark Tail" },
+    "points": 1,
+    "description": "A powerful shark tail extends from your lower back.  It gives you a mean slap attack and helps you glide through the water.",
+    "types": [ "TAIL" ],
+    "category": [ "SAME" ],
+    "restricts_gear": [ "leg_l", "leg_r" ],
+    "allow_soft_gear": true,
+    "flags": [ "MUTATION_SWIM" ],
+    "attacks": {
+      "attack_text_u": "You slap %s with your shark tail",
+      "attack_text_npc": "%1$s slaps %2$s with a powerful shark tail",
+      "chance": 20,
+      "body_part": "leg_r",
+      "strength_damage": { "damage_type": "bash", "amount": 3 }
+    }
+  },
+  {
+    "type": "mutation",
+    "id": "INDEFATIGABLE",
+    "name": { "str": "Indefatigable" },
+    "points": 2,
+    "description": "You have boundless energy, like an apex predator that never tires.  The chase is half the fun!",
+    "category": [ "SAME" ],
+    "fatigue_modifier": -0.2,
+    "stamina_regen_modifier": 0.2
+  },
+  {
+    "type": "mutation",
+    "id": "SMORT",
+    "name": { "str": "Smort" },
+    "points": -2,
+    "description": "You may not be book-smart anymore, but who needs brains when you've got shark charisma?  Delicate tasks suffer, but people just seem to like you more.",
+    "prereqs": [ "INT_UP" ],
+    "threshreq": [ "THRESH_SAME" ],
+    "category": [ "SAME" ],
+    "mixed_effect": true,
+    "passive_mods": { "int_mod": -4 },
+    "social_modifiers": { "persuade": 10 },
+    "craft_skill_bonus": [ [ "electronics", -2 ], [ "tailor", -2 ], [ "mechanics", -2 ], [ "computer", -2 ], [ "fabrication", -2 ] ]
+  },
+  {
+    "type": "mutation",
+    "id": "HATES_BOOKS",
+    "name": { "str": "Hates Books" },
+    "points": -1,
+    "description": "Books are boring!  You'd rather be out swimming or hunting.  Reading takes forever and makes you miserable.",
+    "threshreq": [ "THRESH_SAME" ],
+    "category": [ "SAME" ],
+    "reading_speed_multiplier": 0.5
+  },
+  {
+    "type": "mutation",
+    "id": "SHARK_BITE",
+    "name": { "str": "Shark Bite" },
+    "points": 2,
+    "description": "Your teeth have become razor-sharp triangular blades.  Biting into fallen prey can sometimes rejuvenate you.",
+    "threshreq": [ "THRESH_SAME" ],
+    "category": [ "SAME" ],
+    "attacks": {
+      "attack_text_u": "You sink your teeth into %s",
+      "attack_text_npc": "%1$s bites %2$s with razor-sharp teeth",
+      "chance": 25,
+      "body_part": "mouth",
+      "base_damage": { "damage_type": "stab", "amount": 8 }
+    }
+  },
+  {
+    "type": "mutation",
+    "id": "SUMMON_TRIDENT",
+    "name": { "str": "Trident Summon" },
+    "points": 2,
+    "description": "You can call forth Gawr Gura's Trident from the depths at will.  Activating this mutation summons the trident to your grip.  During Shark Call, the trident awakens to its true Atlantean power.",
+    "purifiable": false,
+    "threshreq": [ "THRESH_SAME" ],
+    "category": [ "SAME" ],
+    "active": true,
+    "cost": 50,
+    "stamina": true
+  },
+  {
+    "type": "mutation",
+    "id": "SHARK_CALL",
+    "name": { "str": "Shark Call" },
+    "points": 3,
+    "description": "You can channel the spirit of the shark, burning your body's energy reserves to temporarily boost your strength and speed.  While active, your summoned trident awakens to its true form.  Activate to call upon your inner apex predator.",
+    "purifiable": false,
+    "threshreq": [ "THRESH_SAME" ],
+    "category": [ "SAME" ],
+    "active": true,
+    "cost": 300,
+    "stamina": true,
+    "hunger": true
+  },
+  {
+    "type": "mutation",
+    "id": "SALT_WATER_AFFINITY",
+    "name": { "str": "Salt Water Affinity" },
+    "points": 1,
+    "description": "Your body craves salt water.  You heal faster when wet, but fresh water just isn't the same.",
+    "category": [ "SAME" ],
+    "flags": [ "MUTATION_SWIM" ]
+  },
+  {
+    "type": "mutation",
+    "id": "HYDROPHILIC",
+    "name": { "str": "Hydrophilic" },
+    "points": -1,
+    "description": "Your shark-like skin dries out quickly.  You need to stay moist or your skin cracks painfully.",
+    "category": [ "SAME" ],
+    "mixed_effect": true,
+    "bodytemp_modifiers": [ -500, 500 ]
+  },
+  {
+    "type": "mutation",
+    "id": "ELECTRORECEPTION_SAME",
+    "copy-from": "ELECTRORECEPTORS",
+    "name": { "str": "Electroreception" },
+    "points": 3,
+    "mixed_effect": false,
+    "description": "Like a true shark, you can sense the electrical fields of living creatures.  You periodically detect monsters through walls at close range.",
+    "category": [ "SAME" ]
+  },
+  {
+    "type": "mutation",
+    "id": "SWEET_TOOTH_SAME",
+    "copy-from": "PROJUNK2",
+    "name": { "str": "Sweet Tooth" },
+    "points": 2,
+    "description": "Your Atlantean metabolism craves sugar like a shark craves chum.  You *adore* junk food, and gain far more enjoyment from it than proper meals.",
+    "threshreq": [ "THRESH_SAME" ],
+    "category": [ "SAME" ]
+  }
+]

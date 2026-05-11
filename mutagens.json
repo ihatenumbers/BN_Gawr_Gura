@@ -1,0 +1,18 @@
+[
+  {
+    "id": "iv_mutagen_same",
+    "type": "COMESTIBLE",
+    "copy-from": "iv_mutagen_fish",
+    "name": "Same serum",
+    "description": "A super-concentrated mutagen the color of deep ocean blue, with a faint bioluminescent shimmer.  You need a syringe to inject it… if you really want to?",
+    "color": "blue",
+    "use_action": { "type": "mutagen_iv", "mutation_category": "SAME" }
+  },
+  {
+    "id": "mutagen_same",
+    "type": "COMESTIBLE",
+    "copy-from": "mutagen_fish",
+    "name": "Same mutagen",
+    "use_action": { "type": "mutagen", "mutation_category": "SAME" }
+  }
+]

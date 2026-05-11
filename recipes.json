@@ -1,0 +1,14 @@
+[
+  {
+    "type": "recipe",
+    "result": "iv_mutagen_same",
+    "copy-from": "iv_mutagen_fish",
+    "components": [ [ [ "mutagen_same", 2 ] ] ]
+  },
+  {
+    "type": "recipe",
+    "result": "mutagen_same",
+    "copy-from": "mutagen_fish",
+    "//": "Uses mutagen_fish components: fish, canned fish, ammonia/lye"
+  }
+]

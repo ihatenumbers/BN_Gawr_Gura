@@ -1,0 +1,98 @@
+[
+  {
+    "type": "mutation",
+    "id": "QUICK",
+    "copy-from": "QUICK",
+    "extend": { "category": [ "SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "PRETTY",
+    "copy-from": "PRETTY",
+    "extend": { "category": [ "SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "INT_UP",
+    "copy-from": "INT_UP",
+    "extend": { "category": [ "SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "hair_white",
+    "copy-from": "hair_white",
+    "extend": { "category": [ "SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "eye_blue",
+    "copy-from": "eye_blue",
+    "extend": { "category": [ "SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "SKIN_LIGHT",
+    "copy-from": "SKIN_LIGHT",
+    "extend": { "category": [ "SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "hair_long",
+    "copy-from": "hair_long",
+    "extend": { "category": [ "SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "HUNGER",
+    "copy-from": "HUNGER",
+    "extend": { "category": [ "SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "CLUMSY",
+    "copy-from": "CLUMSY",
+    "extend": { "category": [ "SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "AMPHIBIAN",
+    "copy-from": "AMPHIBIAN",
+    "description": "You're as comfortable in water as on land — a true shark never fears the deep.  Your swimming speed is greatly increased.",
+    "extend": { "category": [ "SAME" ], "threshreq": [ "THRESH_SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "SEESLEEP",
+    "copy-from": "SEESLEEP",
+    "description": "Like a true shark, you sleep with your eyes open, always.",
+    "extend": { "category": [ "SAME" ], "threshreq": [ "THRESH_SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "WATERSLEEP",
+    "copy-from": "WATERSLEEP",
+    "description": "Nothing beats a nap in a nice, cool ocean trench.  You sleep faster and more soundly underwater.",
+    "extend": { "category": [ "SAME" ], "threshreq": [ "THRESH_SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "FRESHWATEROSMOSIS",
+    "copy-from": "FRESHWATEROSMOSIS",
+    "description": "Your shark skin drinks in the water around you.  While submerged in fresh water, your thirst is quenched.",
+    "extend": { "category": [ "SAME" ], "threshreq": [ "THRESH_SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "DEX_UP_4",
+    "copy-from": "DEX_UP_4",
+    "description": "Your shark reflexes are beyond compare.  +7 Dexterity.  Nothing escapes your grasp.",
+    "extend": { "category": [ "SAME" ], "threshreq": [ "THRESH_SAME" ] }
+  },
+  {
+    "type": "mutation",
+    "id": "THIRST2",
+    "copy-from": "THIRST2",
+    "description": "All that swimming really works up a thirst.  You need about twice the fluids of an average human.",
+    "extend": { "category": [ "SAME" ] }
+  }
+]

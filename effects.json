@@ -1,0 +1,20 @@
+[
+  {
+    "type": "effect_type",
+    "id": "shark_call_buff",
+    "name": [ "Shark's Fury" ],
+    "desc": [ "You are channeling the spirit of the shark." ],
+    "rating": "good",
+    "max_duration": "300 s",
+    "max_intensity": 5,
+    "show_in_info": true,
+    "base_mods": {
+      "str_mod": [ 2, 4 ],
+      "speed_mod": [ 10, 20 ]
+    },
+    "scaling_mods": {
+      "str_mod": [ 1, 2 ],
+      "speed_mod": [ 5, 10 ]
+    }
+  }
+]

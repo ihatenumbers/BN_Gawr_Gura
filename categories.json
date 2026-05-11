@@ -1,0 +1,11 @@
+[
+  {
+    "type": "mutation_category",
+    "id": "SAME",
+    "name": "Same",
+    "threshold_mut": "THRESH_SAME",
+    "mutagen_message": "The taste of saltwater fills your mouth and the call of the deep echoes in your mind.",
+    "iv_message": "Your heart pounds like the crashing surf as the serum flows through your veins.",
+    "memorial_message": "Returned to Atlantis."
+  }
+]

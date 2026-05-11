@@ -1,0 +1,38 @@
+[
+  {
+    "id": "trident_gura",
+    "type": "GENERIC",
+    "copy-from": "spear_forked",
+    "name": { "str": "Gura's Trident" },
+    "description": "A three-pronged spear with a blue-tinged steel head and a shaft wrapped in what appears to be shark leather.  It feels perfectly balanced in your hands and hums faintly with the power of the deep ocean.  During Shark Call, the trident awakens — lashing out in front of you.",
+    "weight": "1305 g",
+    "price_postapoc": "0 cent",
+    "material": [ "steel", "bone_heavy" ],
+    "techniques": [ "WBLOCK_2", "DEF_DISARM", "IMPALE"],
+    "volume": "1750 ml",
+    "color": "light_blue",
+    "price": "500 USD",
+    "relic_data": {
+      "passive_effects": [
+        {
+          "has": "WIELD",
+          "condition": "ALWAYS",
+          "values": [
+            { "value": "STRENGTH", "add": 1 },
+            { "value": "SPEED", "add": 5 }
+          ]
+        }
+      ]
+    },
+    "extend": { "flags": [ "NO_DROP", "UNBREAKABLE_MELEE", "TRADER_AVOID" ] }
+  },
+  {
+    "id": "shark_hoodie",
+    "type": "ARMOR",
+    "copy-from": "hoodie",
+    "name": { "str": "shark hoodie" },
+    "description": "A cozy shark hoodie with a shark mouth on the hood and a small dorsal fin on the back.  Two pockets on the front are perfect for storing sweets.",
+    "color": "blue",
+    "extend": { "flags": [ "TRADER_AVOID" ] }
+  }
+]
