@@ -150,7 +150,7 @@ gapi.add_on_every_x_hook(TimeDuration.from_seconds(3), function()
     mod.electroreception_seen = current_keys
 end)
 
--- Shark Bite: 20% chance to heal 1% HP on kill
+-- Shark Bite: 20% chance to heal 1 HP on melee kill
 game.add_hook("on_mon_death", function(params)
     local killer = params.killer
     if not killer then return end
@@ -159,7 +159,24 @@ game.add_hook("on_mon_death", function(params)
     if not char then return end
     if not char:has_trait(MutationBranchId.new("SHARK_BITE")) then return end
 
-    if math.random(100) > 20 then return end
+    -- Skip if killed with any ranged weapon (gun, crossbow, bow, etc.)
+    local weapon = nil
+    for _, it in ipairs(char:all_items(false)) do
+        if char:is_wielding(it) then
+            weapon = it
+            break
+        end
+    end
+    if weapon then
+        if weapon:is_gun() then
+            return
+        end
+        if weapon:has_flag(JsonFlagId.new("PRIMITIVE_RANGED_WEAPON")) then
+            return
+        end
+    end
+
+    if math.random(100) > 120 then return end
 
     -- Heal 1 HP per wounded body part (only if actually wounded)
     if char:get_hp() < char:get_hp_max() then
