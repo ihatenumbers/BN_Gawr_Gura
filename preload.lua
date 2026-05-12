@@ -310,7 +310,7 @@ local function execute_dash(avatar)
 
     gapi.add_msg(MsgType.good, "You surge forward with your trident!")
 
-    local stamina_cost = 50 + (tiles_traveled * 20)
+    local stamina_cost = 300 + (tiles_traveled * 100)
     avatar:mod_stamina(-stamina_cost)
 
     if hit_wall then
@@ -439,8 +439,7 @@ game.iuse_functions["trident_riptide"] = function(params)
     -- Stamina check using landing distance
     local stamina_cost = 300 + (dist * 100)
     if who:get_stamina() < stamina_cost then
-        gapi.add_msg(MsgType.bad,
-            "You're too exhausted!")
+        gapi.add_msg(MsgType.bad, "You're too exhausted!")
         return 0
     end
 
@@ -448,8 +447,8 @@ game.iuse_functions["trident_riptide"] = function(params)
     mod.dash.state = "charging"
     mod.dash.charge_remaining = charge_turns
 
-    gapi.add_msg("You crouch low, tail coiling behind you...")
-    gapi.add_msg("Riptide charging — " .. charge_turns .. " turns!")
+    gapi.add_msg("You crouch low, gripping your trident...")
+    gapi.add_msg("Winding up for " .. charge_turns .. " turns!")
 
     return 1
 end
