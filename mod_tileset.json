@@ -11,21 +11,54 @@
           { "id": "trident_gura", "fg": 0},
           { "id": "overlay_wielded_trident_gura", "fg": 0},
           { "id": "shark_hoodie", "fg": 1},
-          { "id": "overlay_worn_shark_hoodie", "fg": 1}
+          { "id": "overlay_worn_shark_hoodie", "fg": 1},
+          { "id": "shark_hoodie_down", "fg": 2},
+          { "id": "overlay_worn_shark_hoodie_down", "fg": 2}
         ]
-      },
+      }
+    ]
+  },
+  {
+    "type": "mod_tileset",
+    "compatibility": [ "UNDEAD_PEOPLE_BASE", "UNDEAD_PEOPLE", "MshockRealXotto", "MSX++DEAD_PEOPLE", "UltimateCataclysm", "UltimateCataclysmDemo" ],
+    "tint_pairs": [
+      { "source_type": "skin_tone", "target_type": "skin_tone", "override": true }
+    ],
+    "tints": [
+      { "id": "SKIN_DARK", "fg": "#55381c", "blend_mode": "multiply" },
+      { "id": "SKIN_LIGHT", "fg": "#ffccb5", "blend_mode": "multiply" },
+      { "id": "SKIN_MEDIUM", "fg": "#bf876a", "blend_mode": "multiply" },
+      { "id": "SKIN_PINK", "fg": "#ffb5bc", "blend_mode": "multiply" },
+      { "id": "SKIN_TAN", "fg": "#ff9f68", "blend_mode": "multiply" },
+      { "id": "SKIN_OLIVE", "fg": "#ffe3ac", "blend_mode": "multiply" },
+      { "id": "PALE", "fg": "#ffccb5", "blend_mode": "softlight" },
+      { "id": "ALBINO", "fg": "#ffe3d7", "blend_mode": "softlight" },
+      { "id": "SUNBURN", "fg": "#ffe3d7", "blend_mode": "softlight" },
+      { "id": "PLANTSKIN", "fg": "#7fba45", "blend_mode": "softlight" }
+    ],
+    "tiles-new": [
       {
         "file": "gfx/gura_mutations.png",
         "sprite_width": 32,
         "sprite_height": 32,
         "tiles": [
-          { "id": "overlay_mutation_THRESH_SAME", "fg": 2},
-          { "id": "overlay_mutation_TAIL_SHARK", "fg": 3},
-          { "id": "overlay_mutation_SHARK_BITE", "fg": 4},
-          { "id": "overlay_mutation_SALT_WATER_AFFINITY", "fg": 5},
-          { "id": "overlay_mutation_HYDROPHILIC", "fg": 6},
-          { "id": "overlay_mutation_ELECTRORECEPTION_SAME", "fg": 7},
-          { "id": "overlay_mutation_SHARK_CALL", "fg": 8}
+          { "id": "overlay_mutation_THRESH_SAME", "fg": 0},
+          { "id": "overlay_mutation_SHARK_BITE", "fg": 1},
+          { "id": "overlay_mutation_SALT_WATER_AFFINITY", "fg": 2},
+          { "id": "overlay_mutation_HYDROPHILIC", "fg": 3},
+          { "id": "overlay_mutation_ELECTRORECEPTION_SAME", "fg": 4},
+          { "id": "overlay_mutation_SHARK_CALL", "fg": 5},
+          { "id": "overlay_mutation_TAIL_SHARK_NEUTRAL", "fg": 6},
+          { "id": "overlay_mutation_TAIL_SHARK_HAPPY", "fg": 7},
+          { "id": "overlay_mutation_TAIL_SHARK_SAD", "fg": 8},
+          { "id": "overlay_female_mutation_EXPRESSION_GURA_NEUTRAL", "fg": 9, "rotates": false },
+          { "id": "overlay_male_mutation_EXPRESSION_GURA_NEUTRAL", "fg": 9, "rotates": false },
+          { "id": "overlay_female_mutation_EXPRESSION_GURA_HAPPY", "fg": 10, "rotates": false },
+          { "id": "overlay_male_mutation_EXPRESSION_GURA_HAPPY", "fg": 10, "rotates": false },
+          { "id": "overlay_female_mutation_EXPRESSION_GURA_SAD", "fg": 11, "rotates": false },
+          { "id": "overlay_male_mutation_EXPRESSION_GURA_SAD", "fg": 11, "rotates": false },
+          { "id": "overlay_female_mutation_hair_gura", "fg": 12, "rotates": false },
+          { "id": "overlay_male_mutation_hair_gura", "fg": 12, "rotates": false }
         ]
       }
     ]

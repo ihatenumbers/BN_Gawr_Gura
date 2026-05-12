@@ -3,8 +3,16 @@
     "type": "overlay_order",
     "overlay_ordering": [
       {
-        "id": [ "TAIL_SHARK" ],
-        "order": 99
+        "id": [ "TAIL_SHARK_NEUTRAL", "TAIL_SHARK_HAPPY", "TAIL_SHARK_SAD" ],
+        "order": 1900
+      },
+      {
+        "id": [ "EXPRESSION_GURA_NEUTRAL", "EXPRESSION_GURA_HAPPY", "EXPRESSION_GURA_SAD" ],
+        "order": 1100
+      },
+      {
+        "id": [ "hair_gura" ],
+        "order": 1600
       },
       {
         "id": [ "HYDROPHILIC" ],

@@ -57,7 +57,6 @@
     "name": { "str": "Smort" },
     "points": -2,
     "description": "You may not be book-smart anymore, but who needs brains when you've got shark charisma?  Delicate tasks suffer, but people just seem to like you more.",
-    "prereqs": [ "INT_UP" ],
     "threshreq": [ "THRESH_SAME" ],
     "category": [ "SAME" ],
     "mixed_effect": true,
@@ -154,5 +153,81 @@
     "description": "Your Atlantean metabolism craves sugar like a shark craves chum.  You *adore* junk food, and gain far more enjoyment from it than proper meals.",
     "threshreq": [ "THRESH_SAME" ],
     "category": [ "SAME" ]
+  },
+  {
+    "type": "mutation",
+    "id": "hair_gura",
+    "copy-from": "hair_long",
+    "name": { "str": "Hair style: Gura" },
+    "description": "White hair with blue streaks, styled in Gawr Gura's signature look.",
+    "points": 0,
+    "starting_trait": true,
+    "valid": false,
+    "purifiable": false,
+    "player_display": false,
+    "types": [ "hair_style" ]
+  },
+  {
+    "type": "mutation",
+    "id": "TAIL_SHARK_NEUTRAL",
+    "name": { "str": "Shark Tail - Neutral" },
+    "description": "Your shark tail rests at a neutral angle.",
+    "points": 0,
+    "valid": false,
+    "purifiable": false,
+    "player_display": false
+  },
+  {
+    "type": "mutation",
+    "id": "TAIL_SHARK_HAPPY",
+    "name": { "str": "Shark Tail - Up" },
+    "description": "Your shark tail rises high with excitement!",
+    "points": 0,
+    "valid": false,
+    "purifiable": false,
+    "player_display": false
+  },
+  {
+    "type": "mutation",
+    "id": "TAIL_SHARK_SAD",
+    "name": { "str": "Shark Tail - Down" },
+    "description": "Your shark tail droops with sadness.",
+    "points": 0,
+    "valid": false,
+    "purifiable": false,
+    "player_display": false
+  },
+  {
+    "type": "mutation",
+    "id": "EXPRESSION_GURA_NEUTRAL",
+    "name": { "str": "Expression - Neutral" },
+    "description": "Your expression is calm and neutral.",
+    "points": 0,
+    "valid": false,
+    "purifiable": false,
+    "player_display": false,
+    "types": [ "skin_tone" ]
+  },
+  {
+    "type": "mutation",
+    "id": "EXPRESSION_GURA_HAPPY",
+    "name": { "str": "Expression - Happy" },
+    "description": "You're beaming with joy!",
+    "points": 0,
+    "valid": false,
+    "purifiable": false,
+    "player_display": false,
+    "types": [ "skin_tone" ]
+  },
+  {
+    "type": "mutation",
+    "id": "EXPRESSION_GURA_SAD",
+    "name": { "str": "Expression - Sad" },
+    "description": "Your expression shows deep sadness.",
+    "points": 0,
+    "valid": false,
+    "purifiable": false,
+    "player_display": false,
+    "types": [ "skin_tone" ]
   }
 ]

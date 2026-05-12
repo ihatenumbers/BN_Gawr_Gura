@@ -37,12 +37,6 @@
   },
   {
     "type": "mutation",
-    "id": "hair_long",
-    "copy-from": "hair_long",
-    "extend": { "category": [ "SAME" ] }
-  },
-  {
-    "type": "mutation",
     "id": "HUNGER",
     "copy-from": "HUNGER",
     "extend": { "category": [ "SAME" ] }

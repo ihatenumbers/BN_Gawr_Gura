@@ -5,7 +5,7 @@ Adds a shark-girl mutation category inspired by Gawr Gura.
 To make it more accurate on appearance, make sure to add:
 - Eye color: blue
 - Hair color: white
-- Hair style: long
+- Hair style: Gura
 - Pale Skin
 
 ## New Content
@@ -35,9 +35,10 @@ To make it more accurate on appearance, make sure to add:
 ## Lua Script
 
 `preload.lua` handles custom mutation behaviors:
-- **Trident Summon** — summons/fades Gura's Trident via active mutation toggle
-- **Shark Call** — burns stored kcal for a timed strength/speed buff; deactivates automatically
-- **Awakened Trident** — 35% chance to cast a cone attack on melee hit while Shark Call is active
-- **Electroreception** — every 3s, pings hostiles through walls and reports unseen creatures by direction
-- **Shark Bite** — 20% chance on kill to heal all body parts by 1 HP
-- **Salt Water Affinity** — heals all body parts by 1 HP every 5 mins while wet
+- **Trident Summon** — active toggle mutation, summons/fades Gura's Trident on command, (a)ctivate Gura's trident to riptide, windup time scales with distance
+- **Shark Call** — one-shot timed buff; burns kcal for strength/speed scaling; auto-deactivates after use
+- **Awakened Trident** — 35% chance to cast cone attack on melee hit while Shark Call is active
+- **Electroreception** — every 3s, pings unseen hostile creatures through walls within 5 tiles and reports them by direction
+- **Shark Bite** — 20% chance on kill to heal all body parts by 1 HP if wounded
+- **Cosmetic Mood System** — tail and expression overlays swap automatically
+- **Salt Water Affinity** — heals all body parts by 1 HP every 5 minutes while wet

@@ -24,15 +24,39 @@
         }
       ]
     },
-    "extend": { "flags": [ "NO_DROP", "UNBREAKABLE_MELEE", "TRADER_AVOID" ] }
+    "extend": { "flags": [ "NO_DROP", "UNBREAKABLE_MELEE", "TRADER_AVOID" ] },
+    "use_action": "trident_riptide"
   },
   {
     "id": "shark_hoodie",
     "type": "ARMOR",
     "copy-from": "hoodie",
     "name": { "str": "shark hoodie" },
-    "description": "A cozy shark hoodie with a shark mouth on the front and a small dorsal fin on the back.  Two pockets on the front are perfect for storing sweets.",
+    "description": "A cozy shark hoodie with a shark mouth on the front and a small dorsal fin on the back.  Two pockets on the front are perfect for storing sweets.  Activate it to pull the hood down.",
     "color": "blue",
-    "extend": { "flags": [ "TRADER_AVOID" ] }
+    "extend": { "flags": [ "TRADER_AVOID" ] },
+    "use_action": {
+      "type": "transform",
+      "target": "shark_hoodie_down",
+      "msg": "You pull the shark hood down.",
+      "menu_text": "Pull hood down",
+      "moves": 30
+    }
+  },
+  {
+    "id": "shark_hoodie_down",
+    "type": "ARMOR",
+    "copy-from": "hoodie",
+    "name": { "str": "shark hoodie (hood down)" },
+    "description": "A cozy shark hoodie with a shark mouth on the front and a small dorsal fin on the back.  The hood is pulled down over your shoulders, revealing more of your outfit.  Activate it to pull the hood up.",
+    "color": "blue",
+    "extend": { "flags": [ "TRADER_AVOID" ] },
+    "use_action": {
+      "type": "transform",
+      "target": "shark_hoodie",
+      "msg": "You pull the shark hood back up over your head.",
+      "menu_text": "Pull hood up",
+      "moves": 30
+    }
   }
 ]
