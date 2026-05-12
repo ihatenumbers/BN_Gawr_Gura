@@ -31,8 +31,8 @@
   },
   {
     "type": "mutation",
-    "id": "SKIN_LIGHT",
-    "copy-from": "SKIN_LIGHT",
+    "id": "PALE",
+    "copy-from": "PALE",
     "extend": { "category": [ "SAME" ] }
   },
   {
