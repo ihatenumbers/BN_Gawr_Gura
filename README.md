@@ -15,7 +15,7 @@ To make it more accurate on appearance, make sure to add:
 | `mutations.json` | 13 | Shark-themed mutations (FAST_REFLEXES_SAME, TAIL_SHARK, SHARK_BITE, SUMMON_TRIDENT, SHARK_CALL, ELECTRORECEPTION_SAME, SALT_WATER_AFFINITY, etc.) |
 | `spells.json` | 1 | Awakened Trident Shockwave (cone attack during Shark Call) |
 | `professions.json` | 1 | Gawr Gura starting profession |
-| `items.json` | 2 | Gura's Trident, Shark Hoodie |
+| `items.json` | 3 | Gura's Trident, Shark Hoodie, Hood down ver. |
 | `effects.json` | 1 | Shark Call buff effect (strength + speed scaling) |
 | `dreams.json` | 4 | SAME category dreams (4 intensity tiers) |
 | `mutagens.json` | 2 | SAME mutagen and SAME serum |
@@ -23,7 +23,7 @@ To make it more accurate on appearance, make sure to add:
 | `categories.json` | 1 | SAME mutation category |
 | `thresh_mutation.json` | 1 | Atlantean threshold mutation (THRESH_SAME) |
 | `nested.json` | 1 | Nested mutation category config |
-| `mutation_ordering.json` | 1 | Mutation upgrade ordering |
+| `mutation_ordering.json` | 1 | Mutation ordering |
 | `mod_tileset.json` | 1 | Mutation overlay sprites (8 tiles) |
 
 ## Modified Vanilla
