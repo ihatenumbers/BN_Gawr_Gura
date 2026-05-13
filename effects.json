@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "type": "effect_type",
     "id": "shark_call_buff",
@@ -10,11 +10,15 @@
     "show_in_info": true,
     "base_mods": {
       "str_mod": [ 2, 4 ],
-      "speed_mod": [ 10, 20 ]
+      "speed_mod": [ 10, 20 ],
+      "bash_mod": [ -4, -2 ],
+      "cut_mod": [ -4, -2 ]
     },
     "scaling_mods": {
       "str_mod": [ 1, 2 ],
-      "speed_mod": [ 5, 10 ]
+      "speed_mod": [ 5, 10 ],
+      "bash_mod": [ -2, -1 ],
+      "cut_mod": [ -2, -1 ]
     }
   }
 ]
