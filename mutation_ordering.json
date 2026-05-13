@@ -1,6 +1,7 @@
 [
   {
     "type": "overlay_order",
+    "//": "Reference: data/json/mutations/mutation_ordering.json",
     "overlay_ordering": [
       {
         "id": [ "TAIL_SHARK_NEUTRAL", "TAIL_SHARK_HAPPY", "TAIL_SHARK_SAD" ],
@@ -15,32 +16,8 @@
         "order": 1600
       },
       {
-        "id": [ "HYDROPHILIC" ],
+        "id": [ "HYDROPHILIC", "SALT_WATER_AFFINITY", "SHARK_BITE", "ELECTRORECEPTION_SAME", "SHARK_CALL", "SUMMON_TRIDENT", "THRESH_SAME" ],
         "order": 500
-      },
-      {
-        "id": [ "SALT_WATER_AFFINITY" ],
-        "order": 550
-      },
-      {
-        "id": [ "SHARK_BITE" ],
-        "order": 600
-      },
-      {
-        "id": [ "ELECTRORECEPTION_SAME" ],
-        "order": 650
-      },
-      {
-        "id": [ "SHARK_CALL" ],
-        "order": 700
-      },
-      {
-        "id": [ "SUMMON_TRIDENT" ],
-        "order": 750
-      },
-      {
-        "id": [ "THRESH_SAME" ],
-        "order": 800
       }
     ]
   }

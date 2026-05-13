@@ -1,10 +1,20 @@
-local mod = game.mod_runtime[game.current_mod]
+﻿local mod = game.mod_runtime[game.current_mod]
 local ui = require("lib.ui")
 
 mod.trident_summoned = false
 mod.shark_call_auto = false
 
--- SUMMON_TRIDENT — bionic-claws-style toggle
+-- Helper: remove all items of a given type from a character (destroys them)
+local function remove_all_of_type(who, type_id)
+    local items = who:all_items(false)
+    for _, it in ipairs(items) do
+        if it:get_type():str() == type_id then
+            who:remove_item(it)
+        end
+    end
+end
+
+-- SUMMON_TRIDENT -- toggle that creates/wields the trident on, destroys it on off
 game.mutation_functions["SUMMON_TRIDENT"] = {
     on_activate = function(params)
         gdebug.log_info("GawrGura: SUMMON_TRIDENT on_activate")
@@ -16,14 +26,12 @@ game.mutation_functions["SUMMON_TRIDENT"] = {
             return
         end
 
-        -- Don't duplicate if one already exists in inventory
-        if who:has_item_with_id(ItypeId.new("trident_gura"), false) then
-            mod.trident_summoned = true
-            gapi.add_msg("Your trident awaits in your inventory — wield it to summon it forth.")
-            return
-        end
+        -- Clean up stale tridents (e.g. from old saves before destruction-on-deactivate)
+        remove_all_of_type(who, "trident_gura")
 
-        local trident = who:create_item(ItypeId.new("trident_gura"), 1)
+        -- Create with 0 charges -- trident is GENERIC, not a tool, so charges=1 would
+        -- trigger a debugmsg on save load ("was loaded with charges, but can not have any")
+        local trident = who:create_item(ItypeId.new("trident_gura"), 0)
         if not trident then
             gapi.add_msg(MsgType.bad, "The ocean fails to answer your call...")
             return
@@ -44,12 +52,13 @@ game.mutation_functions["SUMMON_TRIDENT"] = {
         if not who:as_avatar() then return end
 
         who:unwield()
+        remove_all_of_type(who, "trident_gura")
         mod.trident_summoned = false
-        gapi.add_msg("Your trident fades into your inventory.")
+        gapi.add_msg("Your trident fades back into the depths.")
     end
 }
 
--- SHARK_CALL — one-shot timed buff (auto-deactivates after use)
+-- SHARK_CALL -- one-shot timed buff (auto-deactivates after use)
 game.mutation_functions["SHARK_CALL"] = {
     on_activate = function(params)
         gdebug.log_info("GawrGura: SHARK_CALL on_activate")
@@ -112,7 +121,7 @@ game.add_hook("on_creature_melee_attacked", function(params)
     spell:cast(char, params.target:get_pos_ms())
 end)
 
--- Electroreception — passive periodic detection pulse through walls
+-- Electroreception -- passive periodic detection pulse through walls
 mod.electroreception_seen = {}
 gapi.add_on_every_x_hook(TimeDuration.from_seconds(3), function()
     local avatar = gapi.get_avatar()
@@ -150,7 +159,7 @@ gapi.add_on_every_x_hook(TimeDuration.from_seconds(3), function()
     mod.electroreception_seen = current_keys
 end)
 
--- Shark Bite: 20% chance to heal 1 HP on melee kill
+-- Shark Bite: chance to heal 1 HP on melee kill
 game.add_hook("on_mon_death", function(params)
     local killer = params.killer
     if not killer then return end
@@ -244,7 +253,7 @@ end)
 
 -- TRIDENT RIPTIDE
 -- Mouse-aimed multi-turn dash:
--- charge (ceil(dist/3) turns) → execute → reposition
+-- charge (ceil(dist/3) turns) -> execute -> reposition
 -- Stops at solid terrain or creatures.
 -- Getting hit during windup cancels it.
 
@@ -350,12 +359,11 @@ local function cancel_dash(reason)
 end
 
 -- Hook: block voluntary movement during windup via on_character_try_move
--- (fires in game.cpp try_move before the move is committed)
 game.add_hook("on_character_try_move", function(params)
     if mod.dash.state ~= "charging" then return end
     local char = params.char
     if not char or not char:as_avatar() then return end
-    return false  -- disallow the move
+    return false
 end)
 
 -- Hook: interrupt windup if avatar is hit during charge
@@ -366,8 +374,7 @@ game.add_hook("on_creature_melee_attacked", function(params)
     pcall(cancel_dash, "You get hit! The riptide is thrown off!")
 end)
 
--- Per-second windup tick + dash execution (fires every real second,
--- independent of whose turn it is)
+-- Per-second windup tick + dash execution (fires every real second)
 gapi.add_on_every_x_hook(TimeDuration.from_seconds(1), function()
     local avatar = gapi.get_avatar()
     if not avatar then return end
@@ -377,7 +384,7 @@ gapi.add_on_every_x_hook(TimeDuration.from_seconds(1), function()
 
     if dash.state == "charging" then
         if not can_dash(avatar) then
-            pcall(cancel_dash, "You're no longer in water — the riptide fizzles!")
+            pcall(cancel_dash, "You're no longer in water -- the riptide fizzles!")
             return
         end
 
@@ -450,10 +457,8 @@ game.iuse_functions["trident_riptide"] = function(params)
         dist = math.max(math.abs(land_tile.x - src.x), math.abs(land_tile.y - src.y))
     end
 
-    -- Windup: ceiling of dist/3, minimum 1
     local charge_turns = math.max(1, math.ceil(dist / 3))
 
-    -- Stamina check using landing distance
     local stamina_cost = 300 + (dist * 100)
     if who:get_stamina() < stamina_cost then
         gapi.add_msg(MsgType.bad, "You're too exhausted!")
