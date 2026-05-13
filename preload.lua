@@ -1,4 +1,4 @@
-﻿local mod = game.mod_runtime[game.current_mod]
+local mod = game.mod_runtime[game.current_mod]
 local ui = require("lib.ui")
 
 mod.trident_summoned = false
