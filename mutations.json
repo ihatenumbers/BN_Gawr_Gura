@@ -209,7 +209,6 @@
     "valid": false,
     "purifiable": false,
     "player_display": false,
-    "types": [ "skin_tone" ],
     "category": [ "SAME" ]
   },
   {
@@ -221,7 +220,6 @@
     "valid": false,
     "purifiable": false,
     "player_display": false,
-    "types": [ "skin_tone" ],
     "category": [ "SAME" ]
   },
   {
@@ -233,7 +231,6 @@
     "valid": false,
     "purifiable": false,
     "player_display": false,
-    "types": [ "skin_tone" ],
     "category": [ "SAME" ]
   }
 ]
