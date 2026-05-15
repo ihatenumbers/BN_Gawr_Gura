@@ -158,7 +158,7 @@
     "type": "mutation",
     "id": "hair_gura",
     "copy-from": "hair_long",
-    "name": { "str": "Hair style: Gura" },
+    "name": { "str": "Hair style: Gawr Gura" },
     "description": "White hair with blue streaks, styled in Gawr Gura's signature look.",
     "points": 0,
     "starting_trait": true,
@@ -175,7 +175,8 @@
     "points": 0,
     "valid": false,
     "purifiable": false,
-    "player_display": false
+    "player_display": false,
+    "category": [ "SAME" ]
   },
   {
     "type": "mutation",
@@ -185,7 +186,8 @@
     "points": 0,
     "valid": false,
     "purifiable": false,
-    "player_display": false
+    "player_display": false,
+    "category": [ "SAME" ]
   },
   {
     "type": "mutation",
@@ -195,7 +197,8 @@
     "points": 0,
     "valid": false,
     "purifiable": false,
-    "player_display": false
+    "player_display": false,
+    "category": [ "SAME" ]
   },
   {
     "type": "mutation",
@@ -206,7 +209,8 @@
     "valid": false,
     "purifiable": false,
     "player_display": false,
-    "types": [ "skin_tone" ]
+    "types": [ "skin_tone" ],
+    "category": [ "SAME" ]
   },
   {
     "type": "mutation",
@@ -217,7 +221,8 @@
     "valid": false,
     "purifiable": false,
     "player_display": false,
-    "types": [ "skin_tone" ]
+    "types": [ "skin_tone" ],
+    "category": [ "SAME" ]
   },
   {
     "type": "mutation",
@@ -228,6 +233,7 @@
     "valid": false,
     "purifiable": false,
     "player_display": false,
-    "types": [ "skin_tone" ]
+    "types": [ "skin_tone" ],
+    "category": [ "SAME" ]
   }
 ]
