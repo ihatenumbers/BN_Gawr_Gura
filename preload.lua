@@ -187,7 +187,22 @@ end
 gapi.add_on_every_x_hook(TimeDuration.from_seconds(30), function()
     local avatar = gapi.get_avatar()
     if not avatar then return end
-    if not avatar:has_trait(MutationBranchId.new("TAIL_SHARK")) then return end
+
+    -- Cleanup block: Runs if the player doesn't have the base shark tail,
+    -- but still has active tracked cosmetic states (e.g., after purification).
+    if not avatar:has_trait(MutationBranchId.new("TAIL_SHARK")) then
+        if mod.cosmetic_tail or mod.cosmetic_expression then
+            for _, tail_id in pairs(TAIL_MAP) do
+                avatar:unset_mutation(tail_id)
+            end
+            for _, expr_id in pairs(EXPRESSION_MAP) do
+                avatar:unset_mutation(expr_id)
+            end
+            mod.cosmetic_tail = nil
+            mod.cosmetic_expression = nil
+        end
+        return
+    end
 
     -- Init if first run: nil check handles old saves cleanly
     if mod.cosmetic_tail == nil then
@@ -272,7 +287,7 @@ end
 local function deal_damage_to_monster(monster, attacker, damage_amount)
     local start_hp = monster:get_hp()
     local damaged = false
-    success, err = pcall(function()
+    local success, err = pcall(function()
         local hp = monster:get_hp()
         monster:set_hp(hp - damage_amount)
     end)

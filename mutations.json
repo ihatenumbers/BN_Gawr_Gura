@@ -132,7 +132,8 @@
     "description": "Your shark-like skin dries out quickly.  You need to stay moist or your skin cracks painfully.",
     "category": [ "SAME" ],
     "mixed_effect": true,
-    "bodytemp_modifiers": [ -500, 500 ]
+    "bodytemp_modifiers": [ -500, 500 ],
+    "thirst_modifier": 0.3
   },
   {
     "type": "mutation",
