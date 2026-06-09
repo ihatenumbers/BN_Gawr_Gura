@@ -510,7 +510,8 @@ gapi.add_on_every_x_hook(TimeDuration.from_turns(1), function()
         end
 
         -- Check if windup activity is no longer active on the avatar
-        local current_act = avatar:get_activity():get_type():str()
+        local act_id = avatar.activity and (avatar.activity.id or avatar.activity.type)
+        local current_act = act_id and act_id:str() or ""
         if current_act ~= "ACT_RIPTIDE_WINDUP" then
             dash.state = "executing"
             gapi.add_msg(MsgType.good, "NOW!")
@@ -590,7 +591,7 @@ game.iuse_functions["trident_riptide"] = function(params)
     mod.dash.charge_remaining = charge_turns
 
     -- Assign the turn-based player activity to lock actions
-    who:assign_activity(ActivityId.new("ACT_RIPTIDE_WINDUP"), charge_turns * 100)
+    who:assign_activity(ActivityTypeId.new("ACT_RIPTIDE_WINDUP"), charge_turns * 100, -1, -1, "")
 
     gapi.add_msg("You crouch low, gripping your trident...")
     gapi.add_msg("Winding up for " .. charge_turns .. " turns!")
