@@ -404,10 +404,10 @@ local function execute_dash(avatar)
             end
         end
 
-        local multiplier = 1.0 + (tiles_traveled * 0.20)
+        local multiplier = 1.0 + (tiles_traveled * 0.25) + (math.random() * 0.1 - 0.05)
         local final_damage = math.floor(base_dmg * multiplier)
 
-        local success, err = pcall(function() hit_monster:deal_damage(avatar, BodyPartTypeIntId.new(BodyPartTypeId.new("torso")), DamageInstance.new(4, final_damage, 0.0, 1.0, 1.0)) end)
+        local success, err = pcall(function() hit_monster:deal_damage(avatar, BodyPartTypeIntId.new(BodyPartTypeId.new("torso")), DamageInstance.new(6, final_damage, 0.0, 1.0, 1.0)) end)
         if not success then
             gapi.add_msg("An error occurred while dealing damage. %s", tostring(err))
         end
