@@ -29,11 +29,9 @@ game.mutation_functions["SUMMON_TRIDENT"] = {
         -- Clean up stale tridents (e.g. from old saves before destruction-on-deactivate)
         remove_all_of_type(who, "trident_gura")
 
-        -- Create with 0 charges -- trident is GENERIC, not a tool, so charges=1 would
-        -- trigger a debugmsg on save load ("was loaded with charges, but can not have any")
         local trident = who:create_item(ItypeId.new("trident_gura"), 0)
         if not trident then
-            gapi.add_msg(MsgType.bad, "The ocean fails to answer your call...")
+            gapi.add_msg(MsgType.bad, "The trident fails to answer your call...")
             return
         end
 
@@ -119,44 +117,6 @@ game.add_hook("on_creature_melee_attacked", function(params)
 
     local spell = SpellSimple.new(SpellTypeId.new("gura_trident_cone"), false)
     spell:cast(char, params.target:get_pos_ms())
-end)
-
--- Electroreception -- passive periodic detection pulse through walls
-mod.electroreception_seen = {}
-gapi.add_on_every_x_hook(TimeDuration.from_seconds(3), function()
-    local avatar = gapi.get_avatar()
-    if not avatar then return end
-    if not avatar:has_trait(MutationBranchId.new("ELECTRORECEPTION_SAME")) then return end
-
-    local avatar_pos = avatar:get_pos_ms()
-
-    local monsters = gapi.get_all_monsters()
-    local current_keys = {}
-    local new_detections = {}
-
-    for i, mon in ipairs(monsters) do
-        if not avatar:sees(mon) then
-            local mon_pos = mon:get_pos_ms()
-            if coords.rl_dist(avatar_pos, mon_pos) <= 5 then
-                local key = mon_pos.x .. "," .. mon_pos.y .. "," .. mon_pos.z
-                current_keys[key] = true
-                if not mod.electroreception_seen[key] then
-                    local delta = Tripoint.new(mon_pos.x - avatar_pos.x,
-                        mon_pos.y - avatar_pos.y, mon_pos.z - avatar_pos.z)
-                    table.insert(new_detections, {
-                        name = mon:name(1),
-                        dir = gapi.direction_name(gapi.direction_from(delta))
-                    })
-                end
-            end
-        end
-    end
-
-    for _, d in ipairs(new_detections) do
-        gapi.add_msg("Your electroreceptors tingle: " .. d.name .. " to the " .. d.dir .. ".")
-    end
-
-    mod.electroreception_seen = current_keys
 end)
 
 -- Shark Bite: chance to heal 1 HP on melee kill
@@ -275,7 +235,7 @@ local function bresenham_line(x0, y0, z, x1, y1)
     local err = dx - dy
 
     while true do
-        table.insert(points, Tripoint.new(x0, y0, z))
+        table.insert(points, TripointBubMs.new(x0, y0, z))
         if x0 == x1 and y0 == y1 then break end
         local e2 = 2 * err
         if e2 > -dy then
@@ -291,10 +251,15 @@ local function bresenham_line(x0, y0, z, x1, y1)
 end
 
 local function tile_is_solid(map, pos)
-    local ter = map:get_ter_at(pos)
-    return ter:obj():has_flag("WALL")
-        or ter:obj():has_flag("IMPASSABLE")
-        or ter:obj():has_flag("BASHABLE")
+    local ter = map:get_ter_at(pos):obj()
+    if ter:has_flag("IMPASSABLE") or ter:get_movecost() <= 0 then
+        return true
+    end
+    local furn = map:get_furn_at(pos):obj()
+    if furn:has_flag("IMPASSABLE") then
+        return true
+    end
+    return false
 end
 
 local function can_dash(avatar)
@@ -371,7 +336,7 @@ game.add_hook("on_creature_melee_attacked", function(params)
     local char = params.char
     if not char or not char:as_avatar() then return end
     if mod.dash.state ~= "charging" then return end
-    pcall(cancel_dash, "You get hit! The riptide is thrown off!")
+    pcall(cancel_dash, "You get hit! The riptide is canceled!")
 end)
 
 -- Per-second windup tick + dash execution (fires every real second)
@@ -394,7 +359,10 @@ gapi.add_on_every_x_hook(TimeDuration.from_seconds(1), function()
         else
             dash.state = "executing"
             gapi.add_msg(MsgType.good, "NOW!")
-            pcall(execute_dash, avatar)
+            local success, err = pcall(execute_dash, avatar)
+            if not success then
+                gapi.add_msg(MsgType.bad, "Riptide error: " .. tostring(err))
+            end
             dash.state = "idle"
             dash.target_tile = nil
         end
@@ -450,7 +418,7 @@ game.iuse_functions["trident_riptide"] = function(params)
 
     if dist > DASH_MAX_RANGE then
         local scale = DASH_MAX_RANGE / dist
-        land_tile = Tripoint.new(
+        land_tile = TripointBubMs.new(
             src.x + math.floor((land_tile.x - src.x) * scale + 0.5),
             src.y + math.floor((land_tile.y - src.y) * scale + 0.5),
             src.z)

@@ -46,7 +46,6 @@
           { "id": "overlay_mutation_SHARK_BITE", "fg": 1},
           { "id": "overlay_mutation_SALT_WATER_AFFINITY", "fg": 2},
           { "id": "overlay_mutation_HYDROPHILIC", "fg": 3},
-          { "id": "overlay_mutation_ELECTRORECEPTION_SAME", "fg": 4},
           { "id": "overlay_mutation_SHARK_CALL", "fg": 5},
           { "id": "overlay_mutation_TAIL_SHARK_NEUTRAL", "fg": 6},
           { "id": "overlay_mutation_TAIL_SHARK_HAPPY", "fg": 7},

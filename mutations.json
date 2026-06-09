@@ -136,16 +136,6 @@
   },
   {
     "type": "mutation",
-    "id": "ELECTRORECEPTION_SAME",
-    "copy-from": "ELECTRORECEPTORS",
-    "name": { "str": "Electroreception" },
-    "points": 3,
-    "mixed_effect": false,
-    "description": "Like a true shark, you can sense the electrical fields of living creatures.  You periodically detect monsters through walls at close range.",
-    "category": [ "SAME" ]
-  },
-  {
-    "type": "mutation",
     "id": "SWEET_TOOTH_SAME",
     "copy-from": "PROJUNK2",
     "name": { "str": "Sweet Tooth" },
