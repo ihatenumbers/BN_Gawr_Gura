@@ -15,6 +15,54 @@
     "scaling_mods": {
       "str_mod": [ 1, 2 ],
       "speed_mod": [ 5, 10 ]
+    },
+    "effects_on_remove": [
+      { "allow_on_remove": true, "effect_type": "shark_call_comedown", "duration": "2 m" }
+    ]
+  },
+  {
+    "type": "effect_type",
+    "id": "shark_call_comedown",
+    "name": [ "Shark's Exhaustion" ],
+    "desc": [ "Your muscles feel incredibly heavy as the shark spirit leaves your body." ],
+    "apply_message": "The shark spirit recedes, leaving you exhausted!",
+    "rating": "bad",
+    "max_duration": "5 m",
+    "base_mods": {
+      "speed_mod": [ -15 ],
+      "str_mod": [ -2 ],
+      "dex_mod": [ -2 ],
+      "stamina_min": [ -3 ]
+    }
+  },
+  {
+    "type": "effect_type",
+    "id": "gura_dry_skin_1",
+    "name": [ "Dry Skin" ],
+    "desc": [ "Your shark-like skin is starting to dry out.  A quick splash of water would prevent cracking." ],
+    "rating": "bad"
+  },
+  {
+    "type": "effect_type",
+    "id": "gura_dry_skin_2",
+    "name": [ "Parched Scales" ],
+    "desc": [ "Your scales are uncomfortably dry and itchy.  You feel distracted." ],
+    "rating": "bad",
+    "base_mods": {
+      "dex_mod": [ -1 ]
+    }
+  },
+  {
+    "type": "effect_type",
+    "id": "gura_dry_skin_3",
+    "name": [ "Cracked Skin" ],
+    "desc": [ "Your skin is cracking painfully from extreme dehydration, hindering your movement." ],
+    "rating": "bad",
+    "base_mods": {
+      "dex_mod": [ -2 ],
+      "speed_mod": [ -5 ],
+      "pain_min": [ 1 ],
+      "pain_chance": [ 20 ]
     }
   }
 ]

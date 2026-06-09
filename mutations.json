@@ -13,6 +13,16 @@
   },
   {
     "type": "mutation",
+    "id": "A",
+    "name": { "str": "a" },
+    "points": 1,
+    "description": "\"a\"",
+    "threshreq": [ "THRESH_SAME" ],
+    "category": [ "SAME" ],
+    "active": true
+  },
+  {
+    "type": "mutation",
     "id": "SHORT_SAME",
     "name": { "str": "Short" },
     "points": 1,

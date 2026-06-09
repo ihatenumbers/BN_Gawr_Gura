@@ -17,5 +17,17 @@
     "spell_class": "NONE",
     "energy_source": "NONE",
     "difficulty": 0
+  },
+  {
+    "id": "gura_vocal_noise",
+    "type": "SPELL",
+    "name": { "str": "Gura's Cute Noise" },
+    "description": "Emits Gura's signature vocalization.",
+    "sound_description": "a high-pitched \"a\"!",
+    "min_damage": 15,
+    "max_damage": 15,
+    "valid_targets": [ "self" ],
+    "flags": [ "NO_EXPLOSION_VFX" ],
+    "effect": "noise"
   }
 ]

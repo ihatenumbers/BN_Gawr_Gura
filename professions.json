@@ -8,6 +8,7 @@
     "traits": [
       "THRESH_SAME",
       "FAST_REFLEXES_SAME",
+      "A",
       "SHORT_SAME",
       "TAIL_SHARK",
       "INDEFATIGABLE",
