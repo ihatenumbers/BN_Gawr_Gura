@@ -268,6 +268,24 @@ local function can_dash(avatar)
         or avatar:has_morale(MoraleTypeDataId.new("morale_wet"))
 end
 
+-- Helper function to safely deal damage using any available API binding
+local function deal_damage_to_monster(monster, attacker, damage_amount)
+    local start_hp = monster:get_hp()
+    local damaged = false
+    success, err = pcall(function()
+        local hp = monster:get_hp()
+        monster:set_hp(hp - damage_amount)
+    end)
+    if success then
+        -- Trigger death handling if HP drops to or below zero
+        if monster:get_hp() <= 0 then
+            pcall(function() monster:die(attacker) end)
+        end
+        return true
+    end
+    return false
+end
+
 local function execute_dash(avatar)
     local dash = mod.dash
     local target = dash.target_tile
@@ -279,22 +297,28 @@ local function execute_dash(avatar)
 
     local tiles_traveled = 0
     local hit_wall = false
+    local hit_monster = nil
+    local final_tile = src
 
+    -- 1. Identify path, stopping at first monster or solid wall
     for _, tile in ipairs(line) do
-        tiles_traveled = tiles_traveled + 1
         local mon = gapi.get_monster_at(tile)
-
         if mon then
+            hit_monster = mon
             break
         elseif tile_is_solid(map, tile) then
             hit_wall = true
             break
         else
-            avatar:set_pos_ms(tile)
+            final_tile = tile
+            tiles_traveled = tiles_traveled + 1
         end
     end
 
-    if tiles_traveled == 0 and not hit_wall then
+    -- Relocate player to the final tile (directly adjacent to hit_monster or wall)
+    avatar:set_pos_ms(final_tile)
+
+    if tiles_traveled == 0 and not hit_monster then
         gapi.add_msg(MsgType.bad, "You can't dash through that!")
         return
     end
@@ -303,6 +327,88 @@ local function execute_dash(avatar)
 
     local stamina_cost = 300 + (tiles_traveled * 100)
     avatar:mod_stamina(-stamina_cost)
+
+    -- 2. Process monster impact
+    if hit_monster then
+        -- Safely retrieve the currently wielded weapon from inventory
+        local base_dmg = 22  -- Standard fallback
+        local weapon = nil
+        for _, it in ipairs(avatar:all_items(false)) do
+            if avatar:is_wielding(it) then
+                weapon = it
+                break
+            end
+        end
+
+        if weapon then
+            local type_str = weapon:get_type():str()
+            if type_str == "trident_gura" then
+                base_dmg = 25  -- Dedicated base damage for Gura's trident
+            else
+                pcall(function()
+                    if weapon.damage_melee then
+                        local d = weapon:damage_melee("cut")
+                        if d and d > 0 then base_dmg = d end
+                    end
+                end)
+            end
+        end
+
+        -- Apply distance multiplier: base + 20% extra per tile traveled
+        local multiplier = 1.0 + (tiles_traveled * 0.20)
+        local final_damage = math.floor(base_dmg * multiplier)
+
+        -- Deal Cut damage using the safe helper
+        deal_damage_to_monster(hit_monster, avatar, final_damage)
+        gapi.add_msg(string.format("Your trident strikes the %s for %d cut damage!", hit_monster:disp_name(false, true), final_damage))
+
+        -- 3. Calculate and execute Knockback
+        local dx = hit_monster:get_pos_ms().x - final_tile.x
+        local dy = hit_monster:get_pos_ms().y - final_tile.y
+        local step_x = dx == 0 and 0 or (dx > 0 and 1 or -1)
+        local step_y = dy == 0 and 0 or (dy > 0 and 1 or -1)
+
+        -- Knockback scales with both player STR and tiles traveled
+        local kb_dist = math.floor((avatar:get_str() / 4) + (tiles_traveled / 3))
+
+        -- Limit knockback if target is larger than player
+        local p_size = 2 -- Default medium
+        pcall(function() p_size = avatar:get_size() end)
+        local m_size = 2 -- Default medium
+        pcall(function() m_size = hit_monster:get_size() end)
+
+        if m_size > p_size then
+            kb_dist = kb_dist - (m_size - p_size) * 2
+        end
+
+        if kb_dist > 0 then
+            local current_mon_pos = hit_monster:get_pos_ms()
+            for i = 1, kb_dist do
+                local next_pos = TripointBubMs.new(current_mon_pos.x + step_x, current_mon_pos.y + step_y, current_mon_pos.z)
+                
+                -- Check for solid obstacles behind the monster
+                if tile_is_solid(map, next_pos) then
+                    local wall_damage = math.floor(final_damage * 0.40)
+                    deal_damage_to_monster(hit_monster, avatar, wall_damage)
+                    gapi.add_msg(string.format("The %s slams into an obstacle, taking %d additional damage!", hit_monster:disp_name(false, true), wall_damage))
+                    break
+                end
+
+                -- Check for secondary monsters behind the target
+                local other_mon = gapi.get_monster_at(next_pos)
+                if other_mon then
+                    local secondary_damage = math.floor(final_damage * 0.30)
+                    deal_damage_to_monster(other_mon, avatar, secondary_damage)
+                    gapi.add_msg(string.format("The %s collides with %s, dealing %d secondary damage!", hit_monster:disp_name(false, true), other_mon:disp_name(false, true), secondary_damage))
+                    break
+                end
+
+                -- Move the monster one step backward along the vector
+                hit_monster:set_pos_ms(next_pos)
+                current_mon_pos = next_pos
+            end
+        end
+    end
 
     if hit_wall then
         local athletics = avatar:get_skill_level(SkillId.new("swimming"))
