@@ -9,7 +9,11 @@
     "type": "recipe",
     "result": "mutagen_same",
     "copy-from": "mutagen_fish",
-    "//": "Uses mutagen_fish components: fish, canned fish, ammonia/lye"
+    "extend": {
+      "components": [
+        [ [ "salt", 10 ] ]
+      ]
+    }
   },
   {
     "type": "recipe",

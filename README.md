@@ -12,7 +12,7 @@ To make it more accurate on appearance, make sure to add:
 
 | File | Count | What |
 |---|---|---|
-| `mutations.json` | 13 | Shark-themed mutations (FAST_REFLEXES_SAME, TAIL_SHARK, SHARK_BITE, SUMMON_TRIDENT, SHARK_CALL, ELECTRORECEPTION_SAME, SALT_WATER_AFFINITY, etc.) |
+| `mutations.json` | 13 | Shark-themed mutations (FAST_REFLEXES_SAME, TAIL_SHARK, SHARK_BITE, SUMMON_TRIDENT, SHARK_CALL, SALT_WATER_AFFINITY, etc.) |
 | `spells.json` | 1 | Awakened Trident Shockwave (cone attack during Shark Call) |
 | `professions.json` | 1 | Gawr Gura starting profession |
 | `items.json` | 3 | Gura's Trident, Shark Hoodie, Hood down ver. |
@@ -38,7 +38,6 @@ To make it more accurate on appearance, make sure to add:
 - **Trident Summon** — active toggle mutation, summons/fades Gura's Trident on command, (a)ctivate Gura's trident to riptide, windup time scales with distance
 - **Shark Call** — one-shot timed buff; burns kcal for strength/speed scaling; auto-deactivates after use
 - **Awakened Trident** — 35% chance to cast cone attack on melee hit while Shark Call is active
-- **Electroreception** — every 3s, pings unseen hostile creatures through walls within 5 tiles and reports them by direction
 - **Shark Bite** — 20% chance on kill to heal all body parts by 1 HP if wounded
 - **Cosmetic Mood System** — tail and expression overlays swap automatically
 - **Salt Water Affinity** — heals all body parts by 1 HP every 5 minutes while wet

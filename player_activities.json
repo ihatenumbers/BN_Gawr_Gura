@@ -1,0 +1,9 @@
+[
+  {
+    "id": "ACT_RIPTIDE_WINDUP",
+    "type": "activity_type",
+    "verb": "bracing your trident",
+    "suspendable": false,
+    "no_resume": true
+  }
+]

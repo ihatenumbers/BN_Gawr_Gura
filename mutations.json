@@ -13,6 +13,16 @@
   },
   {
     "type": "mutation",
+    "id": "A",
+    "name": { "str": "a" },
+    "points": 1,
+    "description": "\"a\"",
+    "threshreq": [ "THRESH_SAME" ],
+    "category": [ "SAME" ],
+    "active": true
+  },
+  {
+    "type": "mutation",
     "id": "SHORT_SAME",
     "name": { "str": "Short" },
     "points": 1,
@@ -62,7 +72,8 @@
     "mixed_effect": true,
     "passive_mods": { "int_mod": -4 },
     "social_modifiers": { "persuade": 10 },
-    "craft_skill_bonus": [ [ "electronics", -2 ], [ "tailor", -2 ], [ "mechanics", -2 ], [ "computer", -2 ], [ "fabrication", -2 ] ]
+    "craft_skill_bonus": [ [ "electronics", -2 ], [ "tailor", -2 ], [ "mechanics", -2 ], [ "computer", -2 ], [ "fabrication", -2 ] ],
+    "cancels": [ "INT_UP_2", "INT_UP_3", "INT_UP_4", "INT_ALPHA" ]
   },
   {
     "type": "mutation",
@@ -72,7 +83,8 @@
     "description": "Books are boring!  You'd rather be out swimming or hunting.  Reading takes forever and makes you miserable.",
     "threshreq": [ "THRESH_SAME" ],
     "category": [ "SAME" ],
-    "reading_speed_multiplier": 0.5
+    "reading_speed_multiplier": 2.0,
+    "cancels": [ "LOVES_BOOKS", "FASTREADER" ]
   },
   {
     "type": "mutation",
@@ -132,17 +144,9 @@
     "description": "Your shark-like skin dries out quickly.  You need to stay moist or your skin cracks painfully.",
     "category": [ "SAME" ],
     "mixed_effect": true,
-    "bodytemp_modifiers": [ -500, 500 ]
-  },
-  {
-    "type": "mutation",
-    "id": "ELECTRORECEPTION_SAME",
-    "copy-from": "ELECTRORECEPTORS",
-    "name": { "str": "Electroreception" },
-    "points": 3,
-    "mixed_effect": false,
-    "description": "Like a true shark, you can sense the electrical fields of living creatures.  You periodically detect monsters through walls at close range.",
-    "category": [ "SAME" ]
+    "bodytemp_modifiers": [ -500, 500 ],
+    "thirst_modifier": 0.3,
+    "cancels": [ "NO_THIRST", "PLANTSKIN" ]
   },
   {
     "type": "mutation",

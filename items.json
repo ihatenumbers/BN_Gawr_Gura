@@ -57,6 +57,7 @@
       "msg": "You pull the shark hood back up over your head.",
       "menu_text": "Pull hood up",
       "moves": 30
-    }
+    },
+    "covers": [ "torso", "arm_l", "arm_r" ]
   }
 ]

@@ -16,7 +16,7 @@
         "order": 1600
       },
       {
-        "id": [ "HYDROPHILIC", "SALT_WATER_AFFINITY", "SHARK_BITE", "ELECTRORECEPTION_SAME", "SHARK_CALL", "SUMMON_TRIDENT", "THRESH_SAME" ],
+        "id": [ "HYDROPHILIC", "SALT_WATER_AFFINITY", "SHARK_BITE", "SHARK_CALL", "SUMMON_TRIDENT", "THRESH_SAME" ],
         "order": 500
       }
     ]

@@ -8,6 +8,7 @@
     "traits": [
       "THRESH_SAME",
       "FAST_REFLEXES_SAME",
+      "A",
       "SHORT_SAME",
       "TAIL_SHARK",
       "INDEFATIGABLE",
@@ -18,7 +19,6 @@
       "SHARK_CALL",
       "SALT_WATER_AFFINITY",
       "HYDROPHILIC",
-      "ELECTRORECEPTION_SAME",
       "CLUMSY",
       "QUICK",
       "PRETTY",
