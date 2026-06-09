@@ -145,7 +145,7 @@ game.add_hook("on_mon_death", function(params)
         end
     end
 
-    if math.random(100) > 120 then return end
+    if math.random(100) > 80 then return end
 
     -- Heal 1 HP per wounded body part (only if actually wounded)
     if char:get_hp() < char:get_hp_max() then
@@ -285,7 +285,7 @@ local function execute_dash(avatar)
         local mon = gapi.get_monster_at(tile)
 
         if mon then
-            avatar:set_pos_ms(tile)
+            break
         elseif tile_is_solid(map, tile) then
             hit_wall = true
             break

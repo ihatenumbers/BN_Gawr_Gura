@@ -58,6 +58,6 @@
       "menu_text": "Pull hood up",
       "moves": 30
     },
-    "covers": [ "TORSO", "ARM_L", "ARM_R" ]
+    "covers": [ "torso", "arm_l", "arm_r" ]
   }
 ]
