@@ -1,4 +1,6 @@
 local mod = game.mod_runtime[game.current_mod]
+local storage = game.mod_storage[game.current_mod]
+mod.storage = storage
 local ui = require("lib.ui")
 
 mod.trident_summoned = false
@@ -48,11 +50,10 @@ game.mutation_functions["SUMMON_TRIDENT"] = {
         gdebug.log_info("GawrGura: SUMMON_TRIDENT on_deactivate")
         local who = params.user
         if not who:as_avatar() then return end
-
         who:unwield()
         remove_all_of_type(who, "trident_gura")
         mod.trident_summoned = false
-        gapi.add_msg("Your trident fades back into the depths.")
+        gapi.add_msg("The trident disappears from your grip.")
     end
 }
 
@@ -112,6 +113,14 @@ game.add_hook("on_creature_melee_attacked", function(params)
     if not char then return end
     if not char:as_avatar() then return end
     if not mod.trident_summoned then return end
+    local is_wielding_trident = false
+    for _, it in ipairs(char:all_items(false)) do
+        if it:get_type():str() == "trident_gura" and char:is_wielding(it) then
+            is_wielding_trident = true
+            break
+        end
+    end
+    if not is_wielding_trident then return end
     if not char:has_effect(EffectTypeId.new("shark_call_buff")) then return end
     if math.random(100) > 35 then return end
 
@@ -147,10 +156,19 @@ game.add_hook("on_mon_death", function(params)
 
     if math.random(100) > 80 then return end
 
-    -- Heal 1 HP per wounded body part (only if actually wounded)
     if char:get_hp() < char:get_hp_max() then
-        char:healall(1)
-        gapi.add_msg(MsgType.good, "You tear into your fallen prey and feel your wounds knit!")
+        -- Selects a single wounded part to heal
+        local wounded_parts = {}
+        for _, bp in ipairs({ "head", "torso", "arm_l", "arm_r", "leg_l", "leg_r" }) do
+            if char:get_part_hp(bp) < char:get_part_hp_max(bp) then
+                table.insert(wounded_parts, bp)
+            end
+        end
+        if #wounded_parts > 0 then
+            local target_bp = wounded_parts[math.random(#wounded_parts)]
+            char:heal(target_bp, 2) -- Heals 2 HP on one specific wounded limb
+            gapi.add_msg(MsgType.good, "You tear into your fallen prey and feel your wounds knit!")
+        end
     end
 end)
 
@@ -158,17 +176,16 @@ end)
 -- Swaps cosmetic-only mutation overlays based on avatar morale level.
 -- The existing TAIL_SHARK mutation handles gameplay; mood variants
 -- handle the visual overlay that changes with happiness/sadness.
--- cosmetic_tail / cosmetic_expression start as nil, hook owns init
 
 local TAIL_MAP = {
-    happy   = MutationBranchId.new("TAIL_SHARK_HAPPY"),
-    neutral = MutationBranchId.new("TAIL_SHARK_NEUTRAL"),
-    sad     = MutationBranchId.new("TAIL_SHARK_SAD"),
+    happy   = "TAIL_SHARK_HAPPY",
+    neutral = "TAIL_SHARK_NEUTRAL",
+    sad     = "TAIL_SHARK_SAD",
 }
 local EXPRESSION_MAP = {
-    happy   = MutationBranchId.new("EXPRESSION_GURA_HAPPY"),
-    neutral = MutationBranchId.new("EXPRESSION_GURA_NEUTRAL"),
-    sad     = MutationBranchId.new("EXPRESSION_GURA_SAD"),
+    happy   = "EXPRESSION_GURA_HAPPY",
+    neutral = "EXPRESSION_GURA_NEUTRAL",
+    sad     = "EXPRESSION_GURA_SAD",
 }
 
 local function mood_tier_from_morale(morale)
@@ -177,11 +194,16 @@ local function mood_tier_from_morale(morale)
     return "neutral"
 end
 
-local function swap_cosmetic_mutation(avatar, current_id, new_id)
-    if current_id == new_id then return current_id end
-    avatar:unset_mutation(current_id)
-    avatar:set_mutation(new_id)
-    return new_id
+-- Safely swaps mutations using strings stored in persistent storage
+local function swap_cosmetic_mutation(avatar, storage_key, new_id_str)
+    local old_id_str = storage[storage_key]
+    if old_id_str == new_id_str then return end
+
+    if old_id_str then
+        avatar:unset_mutation(MutationBranchId.new(old_id_str))
+    end
+    avatar:set_mutation(MutationBranchId.new(new_id_str))
+    storage[storage_key] = new_id_str
 end
 
 gapi.add_on_every_x_hook(TimeDuration.from_seconds(30), function()
@@ -191,39 +213,41 @@ gapi.add_on_every_x_hook(TimeDuration.from_seconds(30), function()
     -- Cleanup block: Runs if the player doesn't have the base shark tail,
     -- but still has active tracked cosmetic states (e.g., after purification).
     if not avatar:has_trait(MutationBranchId.new("TAIL_SHARK")) then
-        if mod.cosmetic_tail or mod.cosmetic_expression then
-            for _, tail_id in pairs(TAIL_MAP) do
-                avatar:unset_mutation(tail_id)
+        if storage.cosmetic_tail or storage.cosmetic_expression then
+            for _, tail_id_str in pairs(TAIL_MAP) do
+                avatar:unset_mutation(MutationBranchId.new(tail_id_str))
             end
-            for _, expr_id in pairs(EXPRESSION_MAP) do
-                avatar:unset_mutation(expr_id)
+            for _, expr_id_str in pairs(EXPRESSION_MAP) do
+                avatar:unset_mutation(MutationBranchId.new(expr_id_str))
             end
-            mod.cosmetic_tail = nil
-            mod.cosmetic_expression = nil
+            storage.cosmetic_tail = nil
+            storage.cosmetic_expression = nil
         end
         return
     end
 
-    -- Init if first run: nil check handles old saves cleanly
-    if mod.cosmetic_tail == nil then
-        avatar:unset_mutation(TAIL_MAP.happy)
-        avatar:unset_mutation(TAIL_MAP.sad)
-        avatar:unset_mutation(EXPRESSION_MAP.happy)
-        avatar:unset_mutation(EXPRESSION_MAP.sad)
-        avatar:unset_mutation(TAIL_MAP.neutral)
-        avatar:unset_mutation(EXPRESSION_MAP.neutral)
-        avatar:set_mutation(TAIL_MAP.neutral)
-        avatar:set_mutation(EXPRESSION_MAP.neutral)
-        mod.cosmetic_tail       = TAIL_MAP.neutral
-        mod.cosmetic_expression = EXPRESSION_MAP.neutral
+    -- Init if first run or newly mutated: safely handles new/cleared saves
+    if not storage.cosmetic_tail then
+        -- Clear any lingering states first
+        for _, tail_id_str in pairs(TAIL_MAP) do
+            avatar:unset_mutation(MutationBranchId.new(tail_id_str))
+        end
+        for _, expr_id_str in pairs(EXPRESSION_MAP) do
+            avatar:unset_mutation(MutationBranchId.new(expr_id_str))
+        end
+
+        avatar:set_mutation(MutationBranchId.new(TAIL_MAP.neutral))
+        avatar:set_mutation(MutationBranchId.new(EXPRESSION_MAP.neutral))
+        storage.cosmetic_tail       = TAIL_MAP.neutral
+        storage.cosmetic_expression = EXPRESSION_MAP.neutral
         return
     end
 
     local morale = avatar:get_morale_level()
     local tier = mood_tier_from_morale(morale)
 
-    mod.cosmetic_tail       = swap_cosmetic_mutation(avatar, mod.cosmetic_tail,       TAIL_MAP[tier])
-    mod.cosmetic_expression = swap_cosmetic_mutation(avatar, mod.cosmetic_expression, EXPRESSION_MAP[tier])
+    swap_cosmetic_mutation(avatar, "cosmetic_tail", TAIL_MAP[tier])
+    swap_cosmetic_mutation(avatar, "cosmetic_expression", EXPRESSION_MAP[tier])
 end)
 
 -- TRIDENT RIPTIDE
@@ -281,24 +305,6 @@ local function can_dash(avatar)
     local ter = gapi.get_map():get_ter_at(avatar:get_pos_ms())
     return ter:obj():has_flag("SWIMMABLE")
         or avatar:has_morale(MoraleTypeDataId.new("morale_wet"))
-end
-
--- Helper function to safely deal damage using any available API binding
-local function deal_damage_to_monster(monster, attacker, damage_amount)
-    local start_hp = monster:get_hp()
-    local damaged = false
-    local success, err = pcall(function()
-        local hp = monster:get_hp()
-        monster:set_hp(hp - damage_amount)
-    end)
-    if success then
-        -- Trigger death handling if HP drops to or below zero
-        if monster:get_hp() <= 0 then
-            pcall(function() monster:die(attacker) end)
-        end
-        return true
-    end
-    return false
 end
 
 local function execute_dash(avatar)
@@ -373,8 +379,10 @@ local function execute_dash(avatar)
         local multiplier = 1.0 + (tiles_traveled * 0.20)
         local final_damage = math.floor(base_dmg * multiplier)
 
-        -- Deal Cut damage using the safe helper
-        deal_damage_to_monster(hit_monster, avatar, final_damage)
+        local success, err = pcall(function() hit_monster:deal_damage(avatar, BodyPartTypeIntId.new(BodyPartTypeId.new("torso")), DamageInstance.new(4, final_damage, 0.0, 1.0, 1.0)) end)
+        if not success then
+            gapi.add_msg("An error occurred while dealing damage. %s", tostring(err))
+        end
         gapi.add_msg(string.format("Your trident strikes the %s for %d cut damage!", hit_monster:disp_name(false, true), final_damage))
 
         -- 3. Calculate and execute Knockback
@@ -404,7 +412,7 @@ local function execute_dash(avatar)
                 -- Check for solid obstacles behind the monster
                 if tile_is_solid(map, next_pos) then
                     local wall_damage = math.floor(final_damage * 0.40)
-                    deal_damage_to_monster(hit_monster, avatar, wall_damage)
+                    pcall(function() hit_monster:deal_damage(avatar, BodyPartTypeIntId.new(BodyPartTypeId.new("torso")), DamageInstance.new(3, wall_damage, 0.0, 1.0, 1.0)) end)
                     gapi.add_msg(string.format("The %s slams into an obstacle, taking %d additional damage!", hit_monster:disp_name(false, true), wall_damage))
                     break
                 end
@@ -413,7 +421,7 @@ local function execute_dash(avatar)
                 local other_mon = gapi.get_monster_at(next_pos)
                 if other_mon then
                     local secondary_damage = math.floor(final_damage * 0.30)
-                    deal_damage_to_monster(other_mon, avatar, secondary_damage)
+                    pcall(function() other_mon:deal_damage(avatar, BodyPartTypeIntId.new(BodyPartTypeId.new("torso")), DamageInstance.new(3, secondary_damage, 0.0, 1.0, 1.0)) end)
                     gapi.add_msg(string.format("The %s collides with %s, dealing %d secondary damage!", hit_monster:disp_name(false, true), other_mon:disp_name(false, true), secondary_damage))
                     break
                 end
