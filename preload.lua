@@ -65,20 +65,20 @@ game.mutation_functions["SHARK_CALL"] = {
         if not who:as_avatar() then return end
 
         local current_stamina = who:get_stamina()
-        if current_stamina < 5000 then
+        if current_stamina < 3000 then
             gapi.add_msg(MsgType.bad, "You are too winded to call upon the shark spirit!")
             return
         end
 
         local stored_kcal = who:get_stored_kcal()
-        if stored_kcal < 200 then
+        if stored_kcal < 150 then
             gapi.add_msg(MsgType.bad, "You are too starved to call upon the shark spirit!")
             return
         end
 
         -- Consume flat resources
-        who:mod_stamina(-4000)
-        who:mod_stored_kcal(-150)
+        who:mod_stamina(-2000)
+        who:mod_stored_kcal(-100)
 
         who:add_effect(EffectTypeId.new("shark_call_buff"),
             TimeDuration.from_seconds(90), 3)
@@ -167,7 +167,7 @@ game.add_hook("on_creature_melee_attacked", function(params)
     spell:cast(char, params.target:get_pos_ms())
 end)
 
--- Shark Bite: chance to heal 1 HP on melee kill
+-- Shark Bite: chance to heal on melee kill
 game.add_hook("on_mon_death", function(params)
     local killer = params.killer
     if not killer then return end
@@ -176,7 +176,7 @@ game.add_hook("on_mon_death", function(params)
     if not char then return end
     if not char:has_trait(MutationBranchId.new("SHARK_BITE")) then return end
 
-    -- Skip if killed with any ranged weapon (gun, crossbow, bow, etc.)
+    -- Skip if killed with any ranged weapon
     local weapon = nil
     for _, it in ipairs(char:all_items(false)) do
         if char:is_wielding(it) then
@@ -185,12 +185,8 @@ game.add_hook("on_mon_death", function(params)
         end
     end
     if weapon then
-        if weapon:is_gun() then
-            return
-        end
-        if weapon:has_flag(JsonFlagId.new("PRIMITIVE_RANGED_WEAPON")) then
-            return
-        end
+        if weapon:is_gun() then return end
+        if weapon:has_flag(JsonFlagId.new("PRIMITIVE_RANGED_WEAPON")) then return end
     end
 
     if math.random(100) > 80 then return end
@@ -212,10 +208,6 @@ game.add_hook("on_mon_death", function(params)
 end)
 
 -- COSMETIC MOOD SYSTEM (Tail + Expressions)
--- Swaps cosmetic-only mutation overlays based on avatar morale level.
--- The existing TAIL_SHARK mutation handles gameplay; mood variants
--- handle the visual overlay that changes with happiness/sadness.
-
 local TAIL_MAP = {
     happy   = "TAIL_SHARK_HAPPY",
     neutral = "TAIL_SHARK_NEUTRAL",
@@ -233,7 +225,6 @@ local function mood_tier_from_morale(morale)
     return "neutral"
 end
 
--- Safely swaps mutations using strings stored in persistent storage
 local function swap_cosmetic_mutation(avatar, storage_key, new_id_str)
     local old_id_str = storage[storage_key]
     if old_id_str == new_id_str then return end
@@ -249,8 +240,6 @@ gapi.add_on_every_x_hook(TimeDuration.from_seconds(30), function()
     local avatar = gapi.get_avatar()
     if not avatar then return end
 
-    -- Cleanup block: Runs if the player doesn't have the base shark tail,
-    -- but still has active tracked cosmetic states (e.g., after purification).
     if not avatar:has_trait(MutationBranchId.new("TAIL_SHARK")) then
         if storage.cosmetic_tail or storage.cosmetic_expression then
             for _, tail_id_str in pairs(TAIL_MAP) do
@@ -265,9 +254,7 @@ gapi.add_on_every_x_hook(TimeDuration.from_seconds(30), function()
         return
     end
 
-    -- Init if first run or newly mutated: safely handles new/cleared saves
     if not storage.cosmetic_tail then
-        -- Clear any lingering states first
         for _, tail_id_str in pairs(TAIL_MAP) do
             avatar:unset_mutation(MutationBranchId.new(tail_id_str))
         end
@@ -295,8 +282,6 @@ mod.dash = {
     charge_remaining = 0,
     target_tile = nil,
 }
-
-local DASH_MAX_RANGE = 12
 
 local function bresenham_line(x0, y0, z, x1, y1)
     local points = {}
@@ -334,10 +319,17 @@ local function tile_is_solid(map, pos)
     return false
 end
 
-local function can_dash(avatar)
-    local ter = gapi.get_map():get_ter_at(avatar:get_pos_ms())
+local function is_in_water(avatar)
+    local map = gapi.get_map()
+    local pos = avatar:get_pos_ms()
+    local ter = map:get_ter_at(pos)
     return ter:obj():has_flag("SWIMMABLE")
         or avatar:has_morale(MoraleTypeDataId.new("morale_wet"))
+end
+
+-- ponytail: always can dash; range differs (4 land, 12 water) checked at activation
+local function can_dash(avatar)
+    return true
 end
 
 local function execute_dash(avatar)
@@ -347,7 +339,7 @@ local function execute_dash(avatar)
     local src = avatar:get_pos_ms()
 
     local line = bresenham_line(src.x, src.y, src.z, target.x, target.y)
-    table.remove(line, 1)  -- drop starting tile
+    table.remove(line, 1)
 
     local tiles_traveled = 0
     local hit_wall = false
@@ -434,7 +426,6 @@ local function execute_dash(avatar)
             for i = 1, kb_dist do
                 local next_pos = TripointBubMs.new(current_mon_pos.x + step_x, current_mon_pos.y + step_y, current_mon_pos.z)
                 
-                -- Check for solid obstacles behind the monster
                 if tile_is_solid(map, next_pos) then
                     local wall_damage = math.floor(final_damage * 0.40)
                     pcall(function() hit_monster:deal_damage(avatar, BodyPartTypeIntId.new(BodyPartTypeId.new("torso")), DamageInstance.new(3, wall_damage, 0.0, 1.0, 1.0)) end)
@@ -442,7 +433,6 @@ local function execute_dash(avatar)
                     break
                 end
 
-                -- Check for secondary monsters behind the target
                 local other_mon = gapi.get_monster_at(next_pos)
                 if other_mon then
                     local secondary_damage = math.floor(final_damage * 0.30)
@@ -451,7 +441,6 @@ local function execute_dash(avatar)
                     break
                 end
 
-                -- Move the monster one step backward along the vector
                 hit_monster:set_pos_ms(next_pos)
                 current_mon_pos = next_pos
             end
@@ -469,7 +458,6 @@ local function execute_dash(avatar)
     end
 end
 
--- Cancel any active windup
 local function cancel_dash(reason)
     mod.dash.state = "idle"
     mod.dash.target_tile = nil
@@ -477,7 +465,6 @@ local function cancel_dash(reason)
     gapi.add_msg(MsgType.bad, reason)
 end
 
--- Hook: block voluntary movement during windup via on_character_try_move
 game.add_hook("on_character_try_move", function(params)
     if mod.dash.state ~= "charging" then return end
     local char = params.char
@@ -485,7 +472,6 @@ game.add_hook("on_character_try_move", function(params)
     return false
 end)
 
--- Hook: interrupt windup if avatar is hit during charge
 game.add_hook("on_creature_melee_attacked", function(params)
     local char = params.char
     if not char or not char:as_avatar() then return end
@@ -494,7 +480,6 @@ game.add_hook("on_creature_melee_attacked", function(params)
     pcall(cancel_dash, "You get hit! The riptide is canceled!")
 end)
 
--- Process turn-by-turn activity checks (once per turn)
 gapi.add_on_every_x_hook(TimeDuration.from_turns(1), function()
     local avatar = gapi.get_avatar()
     if not avatar then return end
@@ -509,7 +494,6 @@ gapi.add_on_every_x_hook(TimeDuration.from_turns(1), function()
             return
         end
 
-        -- Check if windup activity is no longer active on the avatar
         local act_id = avatar.activity and (avatar.activity.id or avatar.activity.type)
         local current_act = act_id and act_id:str() or ""
         if current_act ~= "ACT_RIPTIDE_WINDUP" then
@@ -525,7 +509,6 @@ gapi.add_on_every_x_hook(TimeDuration.from_turns(1), function()
     end
 end)
 
--- iuse: trident_riptide
 game.iuse_functions["trident_riptide"] = function(params)
     local who = params.user
     if not who:as_avatar() then return 0 end
@@ -548,8 +531,13 @@ game.iuse_functions["trident_riptide"] = function(params)
     end
 
     if not can_dash(who) then
-        gapi.add_msg(MsgType.bad, "You need to be in water or rain to dash!")
+        gapi.add_msg(MsgType.bad, "You can't dash right now!")
         return 0
+    end
+
+    local dash_max_range = is_in_water(who) and 12 or 4
+    if dash_max_range == 4 then
+        gapi.add_msg("On land you can only manage a short hop!")
     end
 
     local target = gapi.look_around()
@@ -569,8 +557,8 @@ game.iuse_functions["trident_riptide"] = function(params)
     local land_tile = target
     local dist = math.max(math.abs(land_tile.x - src.x), math.abs(land_tile.y - src.y))
 
-    if dist > DASH_MAX_RANGE then
-        local scale = DASH_MAX_RANGE / dist
+    if dist > dash_max_range then
+        local scale = dash_max_range / dist
         land_tile = TripointBubMs.new(
             src.x + math.floor((land_tile.x - src.x) * scale + 0.5),
             src.y + math.floor((land_tile.y - src.y) * scale + 0.5),
@@ -590,7 +578,6 @@ game.iuse_functions["trident_riptide"] = function(params)
     mod.dash.state = "charging"
     mod.dash.charge_remaining = charge_turns
 
-    -- Assign the turn-based player activity to lock actions
     who:assign_activity(ActivityTypeId.new("ACT_RIPTIDE_WINDUP"), charge_turns * 100, -1, -1, "")
 
     gapi.add_msg("You crouch low, gripping your trident...")
@@ -609,6 +596,7 @@ gapi.add_on_every_x_hook(TimeDuration.from_seconds(300), function()
     avatar:healall(1)
 end)
 
+-- Dry skin system: thresholds at 20/50/90 min out of water
 gapi.add_on_every_x_hook(TimeDuration.from_seconds(60), function()
     local avatar = gapi.get_avatar()
     if not avatar then return end
@@ -638,14 +626,14 @@ gapi.add_on_every_x_hook(TimeDuration.from_seconds(60), function()
     else
         mod.dryness_counter = mod.dryness_counter + 1
         
-        if mod.dryness_counter == 10 then
+        if mod.dryness_counter == 20 then
             avatar:add_effect(EffectTypeId.new("gura_dry_skin_1"), TimeDuration.from_turns(99999))
             gapi.add_msg(MsgType.bad, "Your skin is starting to feel dry.")
-        elseif mod.dryness_counter == 30 then
+        elseif mod.dryness_counter == 50 then
             avatar:remove_effect(EffectTypeId.new("gura_dry_skin_1"))
             avatar:add_effect(EffectTypeId.new("gura_dry_skin_2"), TimeDuration.from_turns(99999))
             gapi.add_msg(MsgType.bad, "Your skin is uncomfortably dry and itchy.")
-        elseif mod.dryness_counter == 60 then
+        elseif mod.dryness_counter == 90 then
             avatar:remove_effect(EffectTypeId.new("gura_dry_skin_2"))
             avatar:add_effect(EffectTypeId.new("gura_dry_skin_3"), TimeDuration.from_turns(99999))
             gapi.add_msg(MsgType.bad, "Painful cracks form along your dry skin!")

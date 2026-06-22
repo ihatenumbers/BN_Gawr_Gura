@@ -14,9 +14,9 @@
   {
     "type": "mutation",
     "id": "A",
-    "name": { "str": "a" },
+    "name": { "str": "Shark Squeak" },
     "points": 1,
-    "description": "\"a\"",
+    "description": "You let out a distinctive high-pitched vocalization that leaves nearby enemies utterly bewildered.",
     "threshreq": [ "THRESH_SAME" ],
     "category": [ "SAME" ],
     "active": true
@@ -70,10 +70,10 @@
     "threshreq": [ "THRESH_SAME" ],
     "category": [ "SAME" ],
     "mixed_effect": true,
-    "passive_mods": { "int_mod": -4 },
+    "passive_mods": { "int_mod": -2 },
     "social_modifiers": { "persuade": 10 },
-    "craft_skill_bonus": [ [ "electronics", -2 ], [ "tailor", -2 ], [ "mechanics", -2 ], [ "computer", -2 ], [ "fabrication", -2 ] ],
-    "cancels": [ "INT_UP_2", "INT_UP_3", "INT_UP_4", "INT_ALPHA" ]
+    "craft_skill_bonus": [ [ "electronics", -1 ], [ "tailor", -1 ], [ "mechanics", -1 ], [ "computer", -1 ], [ "fabrication", -1 ] ],
+    "cancels": [ "INT_UP_3", "INT_UP_4", "INT_ALPHA" ]
   },
   {
     "type": "mutation",

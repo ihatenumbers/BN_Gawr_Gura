@@ -38,6 +38,6 @@ To make it more accurate on appearance, make sure to add:
 - **Trident Summon** — active toggle mutation, summons/fades Gura's Trident on command, (a)ctivate Gura's trident to riptide, windup time scales with distance
 - **Shark Call** — one-shot timed buff; burns kcal for strength/speed scaling; auto-deactivates after use
 - **Awakened Trident** — 35% chance to cast cone attack on melee hit while Shark Call is active
-- **Shark Bite** — 20% chance on kill to heal all body parts by 1 HP if wounded
+- **Shark Bite** — 20% chance on melee kill to heal 2 HP on a single wounded body part
 - **Cosmetic Mood System** — tail and expression overlays swap automatically
 - **Salt Water Affinity** — heals all body parts by 1 HP every 5 minutes while wet

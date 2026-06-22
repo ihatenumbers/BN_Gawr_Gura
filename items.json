@@ -15,8 +15,7 @@
           "has": "WIELD",
           "condition": "ALWAYS",
           "values": [
-            { "value": "STRENGTH", "add": 1 },
-            { "value": "SPEED", "add": 5 }
+            { "value": "STRENGTH", "add": 1 }
           ]
         }
       ]
